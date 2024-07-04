@@ -1,6 +1,6 @@
-# Frontend Mentor - Password generator app
+# Frontend Mentor - Tic Tac Toe
 
-![Design preview for the Password generator app coding challenge](./preview.jpg)
+![Design preview for the Tic Tac Toe coding challenge](./preview.jpg)
 
 ## Welcome! 👋
 
@@ -12,17 +12,25 @@ Thanks for purchasing this premium Frontend Mentor coding challenge.
 
 ## The challenge
 
-Your challenge is to build out this password generator app and get it looking as close to the design as possible.
+Your challenge is to build out this Tic Tac Toe game and get it looking as close to the design as possible.
 
 You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
 
 Your users should be able to:
 
-- Generate a password based on the selected inclusion options
-- Copy the generated password to the computer's clipboard
-- See a strength rating for their generated password
-- View the optimal layout for the interface depending on their device's screen size
-- See hover and focus states for all interactive elements on the page
+- View the optimal layout for the game depending on their device's screen size
+- See hover states for all interactive elements on the page
+- Play the game either solo vs the computer or multiplayer against another person
+- **Bonus 1**: Save the game state in the browser so that it’s preserved if the player refreshes their browser
+- **Bonus 2**: Instead of having the computer randomly make its moves, try making it clever so it’s proactive in blocking your moves and trying to win
+
+### Expected behaviour
+
+- You can choose to make the default screen either the new game menu or the solo player game board. Note that we're using the solo player game board for the design screenshot, so if you choose the new game menu it won't match up in the design comparison slider. This isn't a big deal, but is something worth considering.
+- On the new game screen, whichever mark isn't selected for the first player is automatically assigned to the second player when the game is started.
+- The first turn of the first round is always played by whoever is playing as X. For every following round, the first turn alternates between O and X.
+- After a round, if the player chooses to quit the game, they should be taken back to the new game menu.
+- If the restart icon in the top right is clicked, the "Restart game?" modal should show and allow the player to reset the game or cancel and continue to play.
 
 Want some support on the challenge? [Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
 
@@ -30,9 +38,7 @@ Want some support on the challenge? [Join our community](https://www.frontendmen
 
 Your task is to build out the project to the design file provided. We provide both Sketch and Figma versions of the design, so you can choose which tool you prefer to use. You can download the design file on the platform. **Please be sure not to share them with anyone else.** The design download comes with a `README.md` file as well to help you get set up.
 
-All the required assets for this project are in the `/assets` folder. The images are already exported for the correct screen size and optimized. Some are reusable at multiple screen sizes. So if you don't see an image in a specific folder, it will typically be in another folder for that page.
-
-We also include variable and static font files for the required fonts for this project. You can choose to either link to Google Fonts or use the local font files to host the fonts yourself. Note that we've removed the static font files for the font weights that aren't needed for this project.
+All the required assets for this project are in the `/assets` folder. The assets are already exported for the correct screen size and optimized. Some images are reusable at multiple screen sizes. So if you don't see an image in a specific folder, it will typically be in another folder for that page.
 
 The design system in the design file will give you more information about the various colors, fonts, and styles used in this project. Our fonts always come from [Google Fonts](https://fonts.google.com/).
 
