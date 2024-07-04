@@ -1,13 +1,9 @@
-import { redirect } from 'next/navigation';
-import { Routes } from '@/app/routes';
+import { ButtonType } from '@/app/_lib/interfaces';
+import { proceedToGame } from '@/app/_lib/functionsServer';
+import { PlayerMark } from '@/app/_lib/interfaces';
 
 const title = 'PICK PLAYER 1’S MARK';
 const description = 'REMEMBER : X GOES FIRST';
-
-enum ButtonType {
-  singlePlayer = 'singlePlayer',
-  multiPlayer = 'multiPlayer',
-}
 
 const buttonTypeColors = {
   [ButtonType.singlePlayer]: {
@@ -39,23 +35,12 @@ const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => (
   </button>
 );
 
-// eslint-disable-next-line @typescript-eslint/require-await
-async function create(FormData: FormData): Promise<void> {
-  'use server';
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const playerMark = FormData.get('playerMark');
-  const gameType = FormData.get('gameType');
-
-  if (gameType === ButtonType.singlePlayer) redirect(Routes.singlePlayer);
-  else if (gameType === ButtonType.multiPlayer) redirect(Routes.multiPlayer);
-}
-
 export default function Form() {
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form action={create} className="flex w-full flex-col gap-[40px]">
-      <div className="h-[205px] w-full rounded-[15px] bg-[#10212A]">
-        <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-[#1F3641] py-[22px]">
+    <form action={proceedToGame} className="flex w-full flex-col gap-[40px]">
+      <div className="h-[205px] w-full rounded-[15px] bg-semiDarkNavyOuterShadow">
+        <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-semiDarkNavy py-[22px]">
           <h1 className="text-[16px] font-bold tracking-[1px] text-silver">{title}</h1>
           <div className="flex h-[72px] w-[412px] items-center justify-center rounded-[10px] bg-darkNavy">
             <label className="group/xOption relative flex items-center justify-center">
@@ -71,7 +56,7 @@ export default function Form() {
                   fillRule="evenodd"
                 />
               </svg>
-              <input type="radio" name="playerMark" value={'x'} />
+              <input type="radio" name="playerMark" value={PlayerMark.X} />
               {''}
             </label>
             <label className="group/oOption relative flex items-center justify-center">
@@ -84,7 +69,7 @@ export default function Form() {
               >
                 <path d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z" />
               </svg>
-              <input defaultChecked type="radio" name="playerMark" value={'o'} />
+              <input defaultChecked type="radio" name="playerMark" value={PlayerMark.O} />
               {''}
             </label>
           </div>

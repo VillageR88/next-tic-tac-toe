@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.headerType {
+  @apply flex justify-center gap-[8px];
+}
+
 input[type='radio'] {
   @apply h-[54px] w-[198px] appearance-none rounded-[10px] transition checked:bg-silver;
 }
 
 input[type='radio']:not(:checked) {
-  @apply hover:bg-[#A8BFC9]/5 hover:cursor-pointer;
+  @apply hover:cursor-pointer hover:bg-[#A8BFC9]/5;
 }
