@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type='radio'] {
+  @apply h-[54px] w-[198px] appearance-none rounded-[10px] transition checked:bg-silver;
+}
+
+input[type='radio']:not(:checked) {
+  @apply hover:bg-[#A8BFC9]/5 hover:cursor-pointer;
+}

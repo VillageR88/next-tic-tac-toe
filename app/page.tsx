@@ -1,9 +1,6 @@
-import Header from './components/Header';
+import { redirect } from 'next/navigation';
+import { Routes } from '@/app/routes';
 
 export default function Home() {
-  return (
-    <div className="mx-auto flex h-fit w-full max-w-[460px] flex-col gap-[40px]">
-      <Header />
-    </div>
-  );
+  redirect(Routes.menu);
 }
