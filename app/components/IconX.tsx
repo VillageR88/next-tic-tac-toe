@@ -1,7 +1,7 @@
-export default function IconX() {
+export default function IconX({ classExtension }: { classExtension?: string }) {
   return (
     <svg
-      className={`size-[20px] fill-silver`}
+      className={classExtension ? classExtension : 'fill-lightBlue'}
       width="64"
       height="64"
       viewBox="0 0 64 64"

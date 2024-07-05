@@ -1,7 +1,7 @@
-export default function IconO() {
+export default function IconO({ classExtension }: { classExtension?: string }) {
   return (
     <svg
-      className={`size-[20px] fill-silver`}
+      className={classExtension ? classExtension : 'fill-lightYellow'}
       width="64"
       height="64"
       viewBox="0 0 64 64"

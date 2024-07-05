@@ -1,8 +1,10 @@
 export default function Restart() {
   return (
     <button
+      name="restart"
+      value="restart"
       title="restart"
-      type="button"
+      type="submit"
       className="group/buttonRestart flex size-[52px] rounded-[10px] bg-silverOuterShadow"
     >
       <div className="flex h-[48px] w-full items-center justify-center rounded-b-[11px] rounded-t-[10px] bg-silver transition-colors group-hover/buttonRestart:bg-silverHover">

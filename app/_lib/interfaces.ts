@@ -12,3 +12,9 @@ export enum PlayerMark {
   X = 'X',
   O = 'O',
 }
+
+export enum BlockValue {
+  X = 'X',
+  O = 'O',
+  empty = 'empty',
+}

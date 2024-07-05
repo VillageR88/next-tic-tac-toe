@@ -1,36 +1,78 @@
-import { cookies } from 'next/headers';
 import { PlayerMark } from '@/app/_lib/interfaces';
 import IconOOutline from '@/app/components/IconOOutline';
 import IconXOutline from '@/app/components/IconXOutline';
+import IconO from '@/app/components/IconO';
+import IconX from '@/app/components/IconX';
+import { BlockValue } from '@/app/_lib/interfaces';
 
-const blockList = Array.from({ length: 9 }, (_, i) => i);
+// const blockList = Array.from({ length: 9 }, (_, i) => i);
 const namingConvention = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'];
 
-function Block({ blockName }: { blockName: string }) {
-  const playerMark = cookies().get('playerMark' as PlayerMark)?.value;
-  const PlayerMark = playerMark === 'X' ? IconXOutline : IconOOutline;
+// eslint-disable-next-line @typescript-eslint/require-await
+
+function Block({ blockName, value, playerMark }: { blockName: string; value: BlockValue; playerMark: PlayerMark }) {
+  const PlayerMarkIconHover =
+    value === BlockValue.empty ? (playerMark === PlayerMark.X ? IconXOutline : IconOOutline) : () => <div></div>;
+  const PlayerMarkIcon =
+    value !== BlockValue.empty
+      ? playerMark === PlayerMark.X
+        ? () => IconX({ classExtension: undefined })
+        : () => IconO({ classExtension: undefined })
+      : () => (<div></div>) as JSX.Element;
 
   return (
     <button
+      disabled={value !== BlockValue.empty}
+      name={blockName}
       aria-label={blockName}
-      type="button"
-      className="group/buttonBox flex size-[140px] rounded-[15px] bg-semiDarkNavyOuterShadow"
+      value={playerMark}
+      type="submit"
+      className="group/buttonBox flex size-[140px] rounded-[15px] bg-semiDarkNavyOuterShadow disabled:hover:cursor-not-allowed"
     >
       <div className="flex h-[132px] w-full items-center justify-center rounded-b-[17px] rounded-t-[15px] bg-semiDarkNavy">
         <div className="absolute size-fit opacity-0 transition group-hover/buttonBox:opacity-100">
-          <PlayerMark />
+          <PlayerMarkIconHover />
+        </div>
+        <div className="absolute size-fit transition">
+          <PlayerMarkIcon />
         </div>
       </div>
     </button>
   );
 }
 
-export default function Main() {
+export default function Main({
+  playerMark,
+  A1,
+  A2,
+  A3,
+  B1,
+  B2,
+  B3,
+  C1,
+  C2,
+  C3,
+}: {
+  playerMark: PlayerMark;
+  A1: BlockValue;
+  A2: BlockValue;
+  A3: BlockValue;
+  B1: BlockValue;
+  B2: BlockValue;
+  B3: BlockValue;
+  C1: BlockValue;
+  C2: BlockValue;
+  C3: BlockValue;
+}) {
   return (
-    <div className="grid h-[461px] w-[460] grid-cols-3 gap-[20px]">
-      {blockList.map((_, i) => (
-        <Block blockName={namingConvention[i]} key={i} />
-      ))}
-    </div>
+    <main className="h-[461px] w-[460]">
+      <ul className="grid grid-cols-3 gap-[20px]">
+        {[A1, A2, A3, B1, B2, B3, C1, C2, C3].map((element, i) => (
+          <li key={i}>
+            <Block playerMark={playerMark} value={element} blockName={namingConvention[i]} />
+          </li>
+        ))}
+      </ul>
+    </main>
   );
 }
