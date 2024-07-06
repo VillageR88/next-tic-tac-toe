@@ -4,13 +4,40 @@ import IconXOutline from '@/app/components/IconXOutline';
 import IconO from '@/app/components/IconO';
 import IconX from '@/app/components/IconX';
 import { BlockValue } from '@/app/_lib/interfaces';
+import { Suspense } from 'react';
 
 // const blockList = Array.from({ length: 9 }, (_, i) => i);
 const namingConvention = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'];
 
-// eslint-disable-next-line @typescript-eslint/require-await
+const SuspenseBlock = ({ value, playerMark }: { value: BlockValue; playerMark: PlayerMark }) => {
+  const PlayerMarkIcon =
+    value !== BlockValue.empty
+      ? playerMark === PlayerMark.X
+        ? () => IconX({ classExtension: undefined })
+        : () => IconO({ classExtension: undefined })
+      : () => (<div></div>) as JSX.Element;
+  return (
+    <div className="group/buttonBox flex size-[140px] rounded-[15px] bg-semiDarkNavyOuterShadow disabled:hover:cursor-not-allowed">
+      <div className="flex h-[132px] w-full items-center justify-center rounded-b-[17px] rounded-t-[15px] bg-semiDarkNavy">
+        <div className="absolute size-fit">
+          {' '}
+          <PlayerMarkIcon />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-function Block({ blockName, value, playerMark }: { blockName: string; value: BlockValue; playerMark: PlayerMark }) {
+async function Block({
+  blockName,
+  value,
+  playerMark,
+}: {
+  blockName: string;
+  value: BlockValue;
+  playerMark: PlayerMark;
+}) {
+  await new Promise((resolve) => setTimeout(resolve, 250));
   const PlayerMarkIconHover =
     value === BlockValue.empty ? (playerMark === PlayerMark.X ? IconXOutline : IconOOutline) : () => <div></div>;
   const PlayerMarkIcon =
@@ -22,6 +49,7 @@ function Block({ blockName, value, playerMark }: { blockName: string; value: Blo
 
   return (
     <button
+      key={blockName}
       disabled={value !== BlockValue.empty}
       name={blockName}
       aria-label={blockName}
@@ -69,7 +97,9 @@ export default function Main({
       <ul className="grid grid-cols-3 gap-[20px]">
         {[A1, A2, A3, B1, B2, B3, C1, C2, C3].map((element, i) => (
           <li key={i}>
-            <Block playerMark={playerMark} value={element} blockName={namingConvention[i]} />
+            <Suspense fallback={<SuspenseBlock playerMark={playerMark} value={element} />}>
+              <Block playerMark={playerMark} value={element} blockName={namingConvention[i]} />
+            </Suspense>
           </li>
         ))}
       </ul>

@@ -4,6 +4,10 @@ import { redirect } from 'next/navigation';
 import { BlockValue, PlayerMark } from '@/app/_lib/interfaces';
 import { cookies } from 'next/headers';
 
+export const fetchCache = 'force-no-store';
+export const dynamicParams = true;
+export const maxDuration = 0;
+
 let A1 = BlockValue.empty;
 let A2 = BlockValue.empty;
 let A3 = BlockValue.empty;
@@ -17,6 +21,8 @@ let C3 = BlockValue.empty;
 // eslint-disable-next-line @typescript-eslint/require-await
 async function handleSubmit(FormData: FormData) {
   'use server';
+  const currentDate = new Date();
+
   // FormData.append('A1', BlockValue.X);
   // console.log(FormData.get('A1') as BlockValue);
   // console.log(FormData.get('restart'));
@@ -50,7 +56,7 @@ async function handleSubmit(FormData: FormData) {
   //reload page
   // window.location.reload();
   //server side page reload
-  redirect('/game/singlePlayer');
+  redirect(`/game/single-player`);
 }
 
 export default function Mode() {
