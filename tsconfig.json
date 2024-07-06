@@ -40,7 +40,7 @@
     "assets.d.ts",
     "next-in-browser-markdown-editor/types/**/*.ts",
     "app/pages/_document.js"
-  ],
+, "app/components/loading.tsx"  ],
   "exclude": [
     "node_modules"
   ]
