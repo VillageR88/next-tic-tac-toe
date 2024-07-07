@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import iconX from '@/public/assets/icon-x.svg';
 import iconO from '@/public/assets/icon-o.svg';
@@ -6,7 +7,7 @@ import { DataContext } from '../_providers/DataContext';
 import { useContext } from 'react';
 
 function Children({ type }: { type: HeaderType }) {
-  const { turn, win } = useContext(DataContext);
+  const { turn, win, blocks } = useContext(DataContext);
   return (
     <>
       <div className="relative">
@@ -15,7 +16,7 @@ function Children({ type }: { type: HeaderType }) {
           <Image priority width={32} height={32} className={`size-[32px]`} src={iconO as string} alt="o icon" />
         </div>
         <div
-          className={`${type == HeaderType.header || win ? 'hidden' : ''} ${turn === PlayerMark.X ? 'bg-lightBlue' : 'translate-x-[40px] bg-lightYellow'} absolute top-[40px] h-1 w-[32px] animate-pulse transition duration-500`}
+          className={`${type == HeaderType.header || win !== undefined || !Object.values(blocks).includes(undefined) ? 'hidden' : ''} ${turn === PlayerMark.X ? 'bg-lightBlue' : 'translate-x-[40px] bg-lightYellow'} absolute top-[40px] h-1 w-[32px] animate-pulse transition duration-500`}
         ></div>
       </div>
     </>

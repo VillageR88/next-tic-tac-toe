@@ -11,13 +11,13 @@ const description = 'REMEMBER : X GOES FIRST';
 
 const buttonTypeColors = {
   [ButtonType.singlePlayer]: {
-    outerBG: 'bg-[#CC8B13]',
+    outerBG: 'bg-lightYellowOuterShadow',
     innerBG: 'bg-lightYellow',
     innerBGHover: 'group-hover/primaryButton:bg-lightYellowHover',
     title: 'NEW GAME (VS CPU)',
   },
   [ButtonType.multiPlayer]: {
-    outerBG: 'bg-[#118C87]',
+    outerBG: 'bg-lightBlueOuterShadow',
     innerBG: 'bg-lightBlue',
     innerBGHover: 'group-hover/primaryButton:bg-lightBlueHover',
     title: 'NEW GAME  (VS PLAYER)',
@@ -45,7 +45,6 @@ const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => (
 export default function Form() {
   const { setPlayerMark, playerMark } = useContext(DataContext);
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form className="flex w-full flex-col gap-[40px]">
       <div className="h-[205px] w-full rounded-[15px] bg-semiDarkNavyOuterShadow">
         <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-semiDarkNavy py-[22px]">

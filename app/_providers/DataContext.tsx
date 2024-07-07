@@ -16,6 +16,9 @@ export const DataContext = createContext(
     setWin: Dispatch<SetStateAction<PlayerMark | undefined>>;
     handleTurn: boolean;
     setHandleTurn: Dispatch<SetStateAction<boolean>>;
+    showRestart: boolean;
+    setShowRestart: Dispatch<SetStateAction<boolean>>;
+    handleClearBoard: () => void;
   },
 );
 
@@ -24,6 +27,7 @@ export default function DataProvider({ children }: { children: ReactNode }) {
   const [turn, setTurn] = useState<PlayerMark>(PlayerMark.X);
   const [win, setWin] = useState<PlayerMark | undefined>(undefined);
   const [handleTurn, setHandleTurn] = useState<boolean>(false);
+  const [showRestart, setShowRestart] = useState<boolean>(false);
 
   const [blocks, setBlocks] = useState<Blocks>({
     A1: undefined,
@@ -36,6 +40,22 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     C2: undefined,
     C3: undefined,
   });
+
+  const handleClearBoard = (): void => {
+    setBlocks({
+      A1: undefined,
+      A2: undefined,
+      A3: undefined,
+      B1: undefined,
+      B2: undefined,
+      B3: undefined,
+      C1: undefined,
+      C2: undefined,
+      C3: undefined,
+    });
+    setWin(undefined);
+    setTurn(Math.random() < 0.5 ? PlayerMark.X : PlayerMark.O);
+  };
 
   useEffect(() => {
     if (handleTurn) {
@@ -62,6 +82,9 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         setWin,
         handleTurn,
         setHandleTurn,
+        showRestart,
+        setShowRestart,
+        handleClearBoard,
       }}
     >
       {children}

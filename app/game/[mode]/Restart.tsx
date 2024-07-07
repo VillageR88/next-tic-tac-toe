@@ -1,10 +1,18 @@
+'use client';
+import { DataContext } from '@/app/_providers/DataContext';
+import { useContext } from 'react';
+
 export default function Restart() {
+  const { setShowRestart } = useContext(DataContext);
   return (
     <button
+      onClick={() => {
+        setShowRestart(true);
+      }}
       name="restart"
       value="restart"
       title="restart"
-      type="submit"
+      type="button"
       className="group/buttonRestart flex size-[52px] rounded-[10px] bg-silverOuterShadow"
     >
       <div className="flex h-[48px] w-full items-center justify-center rounded-b-[11px] rounded-t-[10px] bg-silver transition-colors group-hover/buttonRestart:bg-silverHover">

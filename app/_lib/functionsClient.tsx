@@ -1,3 +1,4 @@
+'use client';
 import { Blocks, PlayerMark } from './interfaces';
 
 export const checkWin = (blocks: Blocks, mark: PlayerMark): PlayerMark | undefined => {
