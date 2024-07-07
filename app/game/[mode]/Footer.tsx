@@ -8,8 +8,8 @@ const Box = ({ title, score, background }: { title: string; score: number; backg
     <div
       className={`${background} flex h-[72px] w-[140px] flex-col items-center justify-center rounded-[15px] text-darkNavy`}
     >
-      <span>{title}</span>
-      <span>{score}</span>
+      <span className="text-[14px] font-medium leading-tight tracking-[0.88px]">{title}</span>
+      <span className="text-[24px] font-bold leading-tight tracking-[1.5px]">{score}</span>
     </div>
   );
 };
