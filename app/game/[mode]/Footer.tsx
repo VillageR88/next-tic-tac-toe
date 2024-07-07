@@ -15,14 +15,14 @@ const Box = ({ title, score, background }: { title: string; score: number; backg
 };
 
 export default function Footer() {
-  const { playerMark } = useContext(DataContext);
+  const { playerMark, score } = useContext(DataContext);
   const nameX = playerMark === PlayerMark.X ? 'X (YOU)' : 'X (CPU)';
-  const nameY = playerMark === PlayerMark.O ? 'O (YOU)' : 'O (CPU)';
+  const nameO = playerMark === PlayerMark.O ? 'O (YOU)' : 'O (CPU)';
   const nameTie = 'TIES';
   const items = {
-    X: { name: nameX, score: 0, background: 'bg-lightBlue' },
-    tie: { name: nameTie, score: 0, background: 'bg-silver' },
-    Y: { name: nameY, score: 0, background: 'bg-lightYellow' },
+    X: { name: nameX, score: score.X, background: 'bg-lightBlue' },
+    tie: { name: nameTie, score: score.tie, background: 'bg-silver' },
+    O: { name: nameO, score: score.O, background: 'bg-lightYellow' },
   };
   return (
     <footer className="flex w-full justify-between">

@@ -64,7 +64,7 @@ const getResultTitle = (win: PlayerMark | undefined, playerMark: PlayerMark) => 
 };
 
 export default function Popup() {
-  const { playerMark, win, showRestart, setShowRestart, handleClearBoard, blocks } = useContext(DataContext);
+  const { playerMark, win, showRestart, setShowRestart, handleClearBoard, blocks, setScore } = useContext(DataContext);
   const Row1 = () => (
     <span className="text-[16px] font-bold tracking-[1px] text-silver">{getResultTitle(win, playerMark)}</span>
   );
@@ -94,10 +94,16 @@ export default function Popup() {
               ).map((items) => {
                 return (
                   <li key={items[0]}>
-                    <Link href={items[0] === (ItemsButtonsWinTie.quit as string) ? Routes.home : ''}>
+                    <Link prefetch href={items[0] === (ItemsButtonsWinTie.quit as string) ? Routes.home : ''}>
                       <button
                         onClick={() => {
                           items[0] !== (ItemsButtonsRestart.cancel as string) && handleClearBoard();
+                          items[0] === (ItemsButtonsRestart.confirmRestart as string) &&
+                            setScore({
+                              X: 0,
+                              tie: 0,
+                              O: 0,
+                            });
                           setShowRestart(false);
                         }}
                         type="button"

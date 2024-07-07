@@ -12,8 +12,8 @@ function Children({ type }: { type: HeaderType }) {
     <>
       <div className="relative">
         <div className="headerType flex">
-          <Image priority width={32} height={32} className={`size-[32px]`} src={iconX as string} alt="x icon" />
-          <Image priority width={32} height={32} className={`size-[32px]`} src={iconO as string} alt="o icon" />
+          <Image width={32} height={32} className={`size-[32px]`} src={iconX as string} alt="x icon" />
+          <Image width={32} height={32} className={`size-[32px]`} src={iconO as string} alt="o icon" />
         </div>
         <div
           className={`${type == HeaderType.header || win !== undefined || !Object.values(blocks).includes(undefined) ? 'hidden' : ''} ${turn === PlayerMark.X ? 'bg-lightBlue' : 'translate-x-[40px] bg-lightYellow'} absolute top-[40px] h-1 w-[32px] animate-pulse transition duration-500`}

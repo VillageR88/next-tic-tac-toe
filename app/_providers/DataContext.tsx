@@ -3,6 +3,8 @@
 import { PlayerMark, Blocks } from '../_lib/interfaces';
 import { checkWin } from '@/app/_lib/functionsClient';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { Routes } from '@/app/routes';
 
 export const DataContext = createContext(
   {} as {
@@ -19,8 +21,16 @@ export const DataContext = createContext(
     showRestart: boolean;
     setShowRestart: Dispatch<SetStateAction<boolean>>;
     handleClearBoard: () => void;
+    score: Score;
+    setScore: Dispatch<SetStateAction<Score>>;
   },
 );
+
+interface Score {
+  X: number;
+  tie: number;
+  O: number;
+}
 
 export default function DataProvider({ children }: { children: ReactNode }) {
   const [playerMark, setPlayerMark] = useState<PlayerMark>(PlayerMark.O);
@@ -28,6 +38,18 @@ export default function DataProvider({ children }: { children: ReactNode }) {
   const [win, setWin] = useState<PlayerMark | undefined>(undefined);
   const [handleTurn, setHandleTurn] = useState<boolean>(false);
   const [showRestart, setShowRestart] = useState<boolean>(false);
+  const [score, setScore] = useState<Score>({ X: 0, tie: 0, O: 0 });
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (loaded) return;
+    if (pathname !== (Routes.menu as string)) {
+      setLoaded(true);
+      router.push(Routes.menu);
+    }
+  }, [loaded, pathname, router]);
 
   const [blocks, setBlocks] = useState<Blocks>({
     A1: undefined,
@@ -56,6 +78,13 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     setWin(undefined);
     setTurn(Math.random() < 0.5 ? PlayerMark.X : PlayerMark.O);
   };
+  useEffect(() => {
+    if (win)
+      setScore((prevScore) => ({
+        ...prevScore,
+        [win]: prevScore[win] + 1,
+      }));
+  }, [win]);
 
   useEffect(() => {
     if (handleTurn) {
@@ -85,6 +114,8 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         showRestart,
         setShowRestart,
         handleClearBoard,
+        score,
+        setScore,
       }}
     >
       {children}
