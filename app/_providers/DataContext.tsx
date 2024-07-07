@@ -62,7 +62,6 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     C2: undefined,
     C3: undefined,
   });
-
   const handleClearBoard = (): void => {
     setBlocks({
       A1: undefined,
@@ -85,6 +84,15 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         [win]: prevScore[win] + 1,
       }));
   }, [win]);
+
+  useEffect(() => {
+    if (win === undefined && Object.values(blocks).every((block) => block !== undefined)) {
+      setScore((prevScore) => ({
+        ...prevScore,
+        tie: prevScore.tie + 1,
+      }));
+    }
+  }, [blocks, win]);
 
   useEffect(() => {
     if (handleTurn) {
