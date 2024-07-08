@@ -8,16 +8,8 @@ import IconX from '@/app/components/IconX';
 import { DataContext } from '@/app/_providers/DataContext';
 import { useContext } from 'react';
 
-function Block({
-  blockName,
-  value,
-  winBlocks,
-}: {
-  blockName: keyof Blocks;
-  value: PlayerMark | undefined;
-  winBlocks: string[] | undefined;
-}) {
-  const { setBlocks, turn, blocks, playerMark, win, setHandleTurn, gameMode } = useContext(DataContext);
+function Block({ blockName, value }: { blockName: keyof Blocks; value: PlayerMark | undefined }) {
+  const { setBlocks, turn, blocks, playerMark, win, setHandleTurn, gameMode, winBlocks } = useContext(DataContext);
   const PlayerMarkIconHover =
     value === undefined && (turn === playerMark || gameMode === GameMode.multiPlayer) && win === undefined
       ? playerMark === turn
@@ -26,12 +18,12 @@ function Block({
       : () => <div></div>;
   const MarkIcon =
     blocks[blockName] === PlayerMark.X
-      ? winBlocks?.includes(blockName)
-        ? () => IconX({ classExtension: 'text-semiDarkNavyOuterShadow' })
+      ? winBlocks.includes(blockName)
+        ? () => IconX({ classExtension: 'text-semiDarkNavyOuterShadow sm:size-[64px] size-[40px]' })
         : IconX
       : blocks[blockName] === PlayerMark.O
-        ? winBlocks?.includes(blockName)
-          ? () => IconO({ classExtension: 'text-semiDarkNavyOuterShadow' })
+        ? winBlocks.includes(blockName)
+          ? () => IconO({ classExtension: 'text-semiDarkNavyOuterShadow sm:size-[64px] size-[40px]' })
           : IconO
         : () => <div></div>;
 
@@ -51,10 +43,10 @@ function Block({
       aria-label={blockName}
       value={playerMark}
       type="button"
-      className={`${winBlocks?.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlueOuterShadow' : 'bg-lightYellowOuterShadow') : 'bg-semiDarkNavyOuterShadow'} group/buttonBox flex h-[96px] w-full rounded-[15px] disabled:hover:cursor-not-allowed sm:size-[140px]`}
+      className={`${winBlocks.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlueOuterShadow' : 'bg-lightYellowOuterShadow') : 'bg-semiDarkNavyOuterShadow'} group/buttonBox flex h-[96px] w-full rounded-[15px] disabled:hover:cursor-not-allowed sm:size-[140px]`}
     >
       <div
-        className={`flex h-[88px] w-full items-center justify-center rounded-b-[17px] rounded-t-[15px] sm:h-[132px] ${winBlocks?.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlue' : 'bg-lightYellow') : 'bg-semiDarkNavy'}`}
+        className={`flex h-[88px] w-full items-center justify-center rounded-b-[17px] rounded-t-[15px] sm:h-[132px] ${winBlocks.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlue' : 'bg-lightYellow') : 'bg-semiDarkNavy'}`}
       >
         <div className="absolute size-fit opacity-0 transition group-hover/buttonBox:opacity-100">
           <PlayerMarkIconHover />
@@ -67,7 +59,7 @@ function Block({
   );
 }
 
-export default function Main({ winBlocks }: { winBlocks: string[] | undefined }) {
+export default function Main() {
   {
     const { blocks } = useContext(DataContext);
     return (
@@ -75,7 +67,7 @@ export default function Main({ winBlocks }: { winBlocks: string[] | undefined })
         <ul className="grid w-full grid-cols-3 gap-[20px]">
           {Object.entries(blocks).map((element, i) => (
             <li className="w-full" key={i}>
-              <Block winBlocks={winBlocks} value={element[1] as PlayerMark} blockName={element[0] as keyof Blocks} />
+              <Block value={element[1] as PlayerMark} blockName={element[0] as keyof Blocks} />
             </li>
           ))}
         </ul>

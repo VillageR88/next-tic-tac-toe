@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { PlayerMark } from '@/app/_lib/interfaces';
 
 export default function Menu() {
-  const { setBlocks, setTurn, setScore, setGameMode } = useContext(DataContext);
+  const { setBlocks, setTurn, setScore, setGameMode, setWinBlocks } = useContext(DataContext);
   useEffect(() => {
     setBlocks({
       A1: undefined,
@@ -24,8 +24,9 @@ export default function Menu() {
     setScore({ X: 0, tie: 0, O: 0 });
     setTurn(PlayerMark.X);
     setGameMode(undefined);
+    setWinBlocks([]);
     document.documentElement.classList.remove('hidden');
-  }, [setBlocks, setGameMode, setScore, setTurn]);
+  }, [setBlocks, setGameMode, setScore, setTurn, setWinBlocks]);
 
   return (
     <div className="mx-auto flex h-fit w-full max-w-[460px] flex-col gap-[40px]">

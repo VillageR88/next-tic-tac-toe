@@ -5,6 +5,7 @@ import { checkWin } from '@/app/_lib/functionsClient';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Routes } from '@/app/routes';
+import { patterns } from '@/app/_lib/const';
 
 export const DataContext = createContext(
   {} as {
@@ -25,6 +26,8 @@ export const DataContext = createContext(
     handleClearBoard: () => void;
     score: Score;
     setScore: Dispatch<SetStateAction<Score>>;
+    winBlocks: string[];
+    setWinBlocks: Dispatch<SetStateAction<string[]>>;
   },
 );
 
@@ -37,6 +40,7 @@ export default function DataProvider({ children }: { children: ReactNode }) {
   const [showRestart, setShowRestart] = useState<boolean>(false);
   const [score, setScore] = useState<Score>({ X: 0, tie: 0, O: 0 });
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [winBlocks, setWinBlocks] = useState<string[]>([]);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -73,6 +77,7 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     });
     setWin(undefined);
     setTurn(Math.random() < 0.5 ? PlayerMark.X : PlayerMark.O);
+    setWinBlocks([]);
   };
   useEffect(() => {
     if (win)
@@ -103,6 +108,27 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     }
   }, [blocks, handleTurn, turn]);
 
+  const findWinPattern = ({ blocks, mark }: { blocks: Blocks; mark: PlayerMark }) => {
+    for (const pattern of patterns) {
+      const [block1, block2, block3] = pattern;
+      if (
+        blocks[block1 as keyof Blocks] === mark &&
+        blocks[block2 as keyof Blocks] === mark &&
+        blocks[block3 as keyof Blocks] === mark
+      ) {
+        return pattern;
+      }
+    }
+  };
+  useEffect(() => {
+    if (win) {
+      const pattern = findWinPattern({ blocks, mark: win });
+      if (pattern) {
+        setWinBlocks(pattern);
+      }
+    }
+  }, [blocks, win]);
+
   return (
     <DataContext.Provider
       value={{
@@ -123,6 +149,8 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         handleClearBoard,
         score,
         setScore,
+        winBlocks,
+        setWinBlocks,
       }}
     >
       {children}

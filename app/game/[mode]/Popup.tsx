@@ -66,13 +66,21 @@ const getResultTitle = (win: PlayerMark | undefined, playerMark: PlayerMark) => 
 export default function Popup() {
   const { playerMark, win, showRestart, setShowRestart, handleClearBoard, blocks, setScore } = useContext(DataContext);
   const Row1 = () => (
-    <span className="text-[16px] font-bold tracking-[1px] text-silver">{getResultTitle(win, playerMark)}</span>
+    <span className="text-[14px] font-bold tracking-[0.88px] text-silver sm:text-[16px] sm:tracking-[1px]">
+      {getResultTitle(win, playerMark)}
+    </span>
   );
   const Row2 = () => (
-    <div className="mt-[16px] flex w-full justify-center gap-[24px] text-center">
-      {win !== undefined ? win === PlayerMark.O ? <IconO /> : <IconX /> : null}
+    <div className="mt-[12px] flex w-full items-center justify-center gap-[9px] text-center sm:mt-[16px] sm:gap-[24px]">
+      {win !== undefined ? (
+        win === PlayerMark.O ? (
+          <IconO classExtension="size-[28px] fill-lightYellow sm:size-[64px]" />
+        ) : (
+          <IconX classExtension="size-[28px] fill-lightBlue sm:size-[64px]" />
+        )
+      ) : null}
       <span
-        className={`w-full text-[40px] font-bold tracking-[2.5px] ${win !== undefined ? (win === PlayerMark.X ? 'text-lightBlue' : 'text-lightYellow') : 'text-silver'}`}
+        className={`w-full text-[24px] font-bold tracking-[1.5px] sm:text-[40px] sm:tracking-[2.5px] ${win !== undefined ? (win === PlayerMark.X ? 'text-lightBlue' : 'text-lightYellow') : 'text-silver'}`}
       >
         {win !== undefined ? titleTakesTheRound : !Object.values(blocks).includes(undefined) ? titleTie : titleRestart}
       </span>
@@ -82,8 +90,8 @@ export default function Popup() {
   if (win !== undefined || !Object.values(blocks).includes(undefined) || showRestart)
     return (
       <div className="fixed left-0 top-0 z-10 flex size-full items-center bg-black/50">
-        <div className="flex h-[266px] w-full items-center justify-center bg-semiDarkNavy">
-          <div className="flex w-full max-w-[491px] flex-col items-center">
+        <div className="flex h-[228px] w-full items-center justify-center bg-semiDarkNavy sm:h-[266px]">
+          <div className="flex w-full max-w-[277px] flex-col items-center sm:max-w-[491px]">
             {win !== undefined && <Row1 />}
             <Row2 />
             <ul className="mt-[24px] flex h-[52px] w-fit gap-[16px]">
