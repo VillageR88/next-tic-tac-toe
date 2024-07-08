@@ -14,6 +14,19 @@ export default function Mode() {
   const aIMark = playerMark === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
   const emptyBlocks = Object.entries(blocks).filter(([, block]) => block === undefined);
   const randomBlock = emptyBlocks[Math.floor(Math.random() * emptyBlocks.length)];
+  const findWinPattern = ({ blocks, mark }: { blocks: Blocks; mark: PlayerMark }) => {
+    for (const pattern of patterns) {
+      const [block1, block2, block3] = pattern;
+      if (
+        blocks[block1 as keyof Blocks] === mark &&
+        blocks[block2 as keyof Blocks] === mark &&
+        blocks[block3 as keyof Blocks] === mark
+      ) {
+        return pattern;
+      }
+    }
+  };
+  const winBlocks = findWinPattern({ blocks, mark: turn });
   const findBlockOfPattern = ({ blocks, mark }: { blocks: Blocks; mark: PlayerMark }): string | undefined => {
     for (const pattern of patterns) {
       const [block1, block2, block3] = pattern;
@@ -111,7 +124,7 @@ export default function Mode() {
     <form className="mx-auto flex h-fit w-full max-w-[460px] flex-col gap-[19px]">
       <Popup />
       <Navbar />
-      <Main />
+      <Main winBlocks={winBlocks} />
       <Footer />
     </form>
   );
