@@ -1,6 +1,6 @@
 'use client';
 
-import { PlayerMark, Blocks } from '../_lib/interfaces';
+import { PlayerMark, Blocks, Score, GameMode } from '../_lib/interfaces';
 import { checkWin } from '@/app/_lib/functionsClient';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
@@ -8,6 +8,8 @@ import { Routes } from '@/app/routes';
 
 export const DataContext = createContext(
   {} as {
+    gameMode: GameMode | undefined;
+    setGameMode: Dispatch<SetStateAction<GameMode | undefined>>;
     playerMark: PlayerMark;
     setPlayerMark: Dispatch<SetStateAction<PlayerMark>>;
     blocks: Blocks;
@@ -26,13 +28,8 @@ export const DataContext = createContext(
   },
 );
 
-interface Score {
-  X: number;
-  tie: number;
-  O: number;
-}
-
 export default function DataProvider({ children }: { children: ReactNode }) {
+  const [gameMode, setGameMode] = useState<GameMode | undefined>(undefined);
   const [playerMark, setPlayerMark] = useState<PlayerMark>(PlayerMark.O);
   const [turn, setTurn] = useState<PlayerMark>(PlayerMark.X);
   const [win, setWin] = useState<PlayerMark | undefined>(undefined);
@@ -109,6 +106,8 @@ export default function DataProvider({ children }: { children: ReactNode }) {
   return (
     <DataContext.Provider
       value={{
+        gameMode,
+        setGameMode,
         playerMark,
         setPlayerMark,
         blocks,

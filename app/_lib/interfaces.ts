@@ -24,3 +24,14 @@ export interface Blocks {
   C2: PlayerMark | undefined;
   C3: PlayerMark | undefined;
 }
+
+export enum GameMode {
+  singlePlayer = 'singlePlayer',
+  multiPlayer = 'multiPlayer',
+}
+
+export interface Score {
+  X: number;
+  tie: number;
+  O: number;
+}

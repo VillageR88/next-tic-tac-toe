@@ -1,5 +1,5 @@
 'use client';
-import { ButtonType } from '@/app/_lib/interfaces';
+import { ButtonType, GameMode } from '@/app/_lib/interfaces';
 import { PlayerMark } from '@/app/_lib/interfaces';
 import Link from 'next/link';
 import { Routes } from '@/app/routes';
@@ -24,23 +24,28 @@ const buttonTypeColors = {
   },
 };
 
-const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => (
-  <Link prefetch href={buttonType !== ButtonType.multiPlayer ? Routes[buttonType] : ''}>
-    <button
-      disabled={buttonType === ButtonType.multiPlayer}
-      name="gameType"
-      value={buttonType}
-      className={`${buttonTypeColors[buttonType].outerBG} group/primaryButton flex h-[67px] w-full flex-col rounded-[15px] text-[20px] font-bold tracking-[1.25px] text-darkNavy disabled:cursor-not-allowed`}
-      type="button"
-    >
-      <div
-        className={`${buttonTypeColors[buttonType].innerBG} ${buttonTypeColors[buttonType].innerBGHover} flex h-[59px] w-full items-center justify-center rounded-b-[20px] rounded-t-[15px] transition-colors`}
+const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => {
+  const { setGameMode } = useContext(DataContext);
+  return (
+    <Link prefetch href={Routes[buttonType]}>
+      <button
+        onClick={() => {
+          setGameMode(GameMode[buttonType]);
+        }}
+        name="gameType"
+        value={buttonType}
+        className={`${buttonTypeColors[buttonType].outerBG} group/primaryButton flex h-[67px] w-full flex-col rounded-[15px] text-[20px] font-bold tracking-[1.25px] text-darkNavy disabled:cursor-not-allowed`}
+        type="button"
       >
-        {buttonTypeColors[buttonType].title}
-      </div>
-    </button>
-  </Link>
-);
+        <div
+          className={`${buttonTypeColors[buttonType].innerBG} ${buttonTypeColors[buttonType].innerBGHover} flex h-[59px] w-full items-center justify-center rounded-b-[20px] rounded-t-[15px] transition-colors`}
+        >
+          {buttonTypeColors[buttonType].title}
+        </div>
+      </button>
+    </Link>
+  );
+};
 
 export default function Form() {
   const { setPlayerMark, playerMark } = useContext(DataContext);

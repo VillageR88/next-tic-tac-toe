@@ -1,5 +1,5 @@
 'use client';
-import { PlayerMark } from '@/app/_lib/interfaces';
+import { GameMode, PlayerMark } from '@/app/_lib/interfaces';
 import { DataContext } from '@/app/_providers/DataContext';
 import { useContext } from 'react';
 
@@ -15,9 +15,16 @@ const Box = ({ title, score, background }: { title: string; score: number; backg
 };
 
 export default function Footer() {
-  const { playerMark, score } = useContext(DataContext);
-  const nameX = playerMark === PlayerMark.X ? 'X (YOU)' : 'X (CPU)';
-  const nameO = playerMark === PlayerMark.O ? 'O (YOU)' : 'O (CPU)';
+  const { playerMark, score, gameMode } = useContext(DataContext);
+  function getPlayerName(mark: PlayerMark, playerMark: PlayerMark, gameMode: GameMode | undefined) {
+    if (mark === playerMark) {
+      return `${mark} (${gameMode === GameMode.singlePlayer ? 'YOU' : 'P1'})`;
+    } else {
+      return `${mark} (${gameMode === GameMode.singlePlayer ? 'CPU' : 'P2'})`;
+    }
+  }
+  const nameX = getPlayerName(PlayerMark.X, playerMark, gameMode);
+  const nameO = getPlayerName(PlayerMark.O, playerMark, gameMode);
   const nameTie = 'TIES';
   const items = {
     X: { name: nameX, score: score.X, background: 'bg-lightBlue' },

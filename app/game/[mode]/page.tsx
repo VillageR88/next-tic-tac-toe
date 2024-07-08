@@ -5,22 +5,12 @@ import Main from './Main';
 import Footer from './Footer';
 import { DataContext } from '@/app/_providers/DataContext';
 import { useContext, useEffect } from 'react';
-import { Blocks, PlayerMark } from '@/app/_lib/interfaces';
+import { Blocks, GameMode, PlayerMark } from '@/app/_lib/interfaces';
+import { patterns } from '@/app/_lib/const';
 import Popup from './Popup';
 
-const patterns = [
-  ['A1', 'A2', 'A3'],
-  ['B1', 'B2', 'B3'],
-  ['C1', 'C2', 'C3'],
-  ['A1', 'B1', 'C1'],
-  ['A2', 'B2', 'C2'],
-  ['A3', 'B3', 'C3'],
-  ['A1', 'B2', 'C3'],
-  ['A3', 'B2', 'C1'],
-];
-
 export default function Mode() {
-  const { playerMark, blocks, setBlocks, turn, setHandleTurn, win } = useContext(DataContext);
+  const { playerMark, blocks, setBlocks, turn, setHandleTurn, win, gameMode } = useContext(DataContext);
   const aIMark = playerMark === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
   const emptyBlocks = Object.entries(blocks).filter(([, block]) => block === undefined);
   const randomBlock = emptyBlocks[Math.floor(Math.random() * emptyBlocks.length)];
@@ -64,8 +54,7 @@ export default function Mode() {
   const resolveMove = findBlockOfPattern({ blocks, mark: aIMark });
 
   useEffect(() => {
-    if (turn === playerMark || win !== undefined) return;
-
+    if (turn === playerMark || win !== undefined || gameMode === GameMode.multiPlayer) return;
     const timer = setTimeout(() => {
       if (emptyBlocks.length === 0) return;
       const [blockKey] = randomBlock;
@@ -108,6 +97,7 @@ export default function Mode() {
     cornerMove,
     defenseMove,
     emptyBlocks.length,
+    gameMode,
     playerMark,
     randomBlock,
     resolveMove,

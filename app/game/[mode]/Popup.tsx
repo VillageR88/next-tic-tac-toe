@@ -69,10 +69,10 @@ export default function Popup() {
     <span className="text-[16px] font-bold tracking-[1px] text-silver">{getResultTitle(win, playerMark)}</span>
   );
   const Row2 = () => (
-    <div className="mt-[16px] flex w-full justify-center gap-[24px]">
+    <div className="mt-[16px] flex w-full justify-center gap-[24px] text-center">
       {win !== undefined ? win === PlayerMark.O ? <IconO /> : <IconX /> : null}
       <span
-        className={`text-[40px] font-bold tracking-[2.5px] ${win !== undefined ? (win === PlayerMark.X ? 'text-lightBlue' : 'text-lightYellow') : 'text-silver'}`}
+        className={`w-full text-[40px] font-bold tracking-[2.5px] ${win !== undefined ? (win === PlayerMark.X ? 'text-lightBlue' : 'text-lightYellow') : 'text-silver'}`}
       >
         {win !== undefined ? titleTakesTheRound : !Object.values(blocks).includes(undefined) ? titleTie : titleRestart}
       </span>

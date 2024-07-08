@@ -1,6 +1,6 @@
 'use client';
 
-import { PlayerMark, Blocks } from '@/app/_lib/interfaces';
+import { PlayerMark, Blocks, GameMode } from '@/app/_lib/interfaces';
 import IconOOutline from '@/app/components/IconOOutline';
 import IconXOutline from '@/app/components/IconXOutline';
 import IconO from '@/app/components/IconO';
@@ -8,15 +8,14 @@ import IconX from '@/app/components/IconX';
 import { DataContext } from '@/app/_providers/DataContext';
 import { useContext } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/require-await
 function Block({ blockName, value }: { blockName: keyof Blocks; value: PlayerMark | undefined }) {
-  const { setBlocks, turn, blocks, playerMark, win, setHandleTurn } = useContext(DataContext);
+  const { setBlocks, turn, blocks, playerMark, win, setHandleTurn, gameMode } = useContext(DataContext);
 
   const PlayerMarkIconHover =
-    value === undefined && turn === playerMark && win === undefined
-      ? playerMark === PlayerMark.X
-        ? IconXOutline
-        : IconOOutline
+    value === undefined && (turn === playerMark || gameMode === GameMode.multiPlayer) && win === undefined
+      ? playerMark === turn
+        ? IconOOutline
+        : IconXOutline
       : () => <div></div>;
   const MarkIcon =
     blocks[blockName] === PlayerMark.X ? IconX : blocks[blockName] === PlayerMark.O ? IconO : () => <div></div>;
@@ -24,15 +23,15 @@ function Block({ blockName, value }: { blockName: keyof Blocks; value: PlayerMar
   return (
     <button
       onClick={
-        value === undefined && turn === playerMark
+        value === undefined && (turn === playerMark || gameMode === GameMode.multiPlayer)
           ? () => {
-              setBlocks((prevBlocks) => ({ ...prevBlocks, [blockName]: playerMark }));
+              setBlocks((prevBlocks) => ({ ...prevBlocks, [blockName]: turn }));
               setHandleTurn(true);
             }
           : undefined
       }
       key={blockName}
-      disabled={value !== undefined || turn !== playerMark || win !== undefined}
+      disabled={value !== undefined || (turn !== playerMark && gameMode === GameMode.singlePlayer) || win !== undefined}
       name={blockName}
       aria-label={blockName}
       value={playerMark}
