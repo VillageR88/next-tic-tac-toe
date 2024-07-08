@@ -1,49 +1,61 @@
-import { ButtonType } from '@/app/_lib/interfaces';
-import { proceedToGame } from '@/app/_lib/functionsServer';
+'use client';
+import { ButtonType, GameMode } from '@/app/_lib/interfaces';
 import { PlayerMark } from '@/app/_lib/interfaces';
+import Link from 'next/link';
+import { Routes } from '@/app/routes';
+import { DataContext } from '../_providers/DataContext';
+import { useContext } from 'react';
 
 const title = 'PICK PLAYER 1’S MARK';
 const description = 'REMEMBER : X GOES FIRST';
 
 const buttonTypeColors = {
   [ButtonType.singlePlayer]: {
-    outerBG: 'bg-[#CC8B13]',
+    outerBG: 'bg-lightYellowOuterShadow',
     innerBG: 'bg-lightYellow',
     innerBGHover: 'group-hover/primaryButton:bg-lightYellowHover',
     title: 'NEW GAME (VS CPU)',
   },
   [ButtonType.multiPlayer]: {
-    outerBG: 'bg-[#118C87]',
+    outerBG: 'bg-lightBlueOuterShadow',
     innerBG: 'bg-lightBlue',
     innerBGHover: 'group-hover/primaryButton:bg-lightBlueHover',
     title: 'NEW GAME  (VS PLAYER)',
   },
 };
 
-const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => (
-  <button
-    name="gameType"
-    value={buttonType}
-    className={`${buttonTypeColors[buttonType].outerBG} group/primaryButton flex h-[67px] w-full flex-col rounded-[15px] text-[20px] font-bold tracking-[1.25px] text-darkNavy`}
-    type="submit"
-  >
-    <div
-      className={`${buttonTypeColors[buttonType].innerBG} ${buttonTypeColors[buttonType].innerBGHover} flex h-[59px] w-full items-center justify-center rounded-b-[20px] rounded-t-[15px] transition-colors`}
-    >
-      {buttonTypeColors[buttonType].title}
-    </div>
-  </button>
-);
+const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => {
+  const { setGameMode } = useContext(DataContext);
+  return (
+    <Link prefetch href={Routes[buttonType]}>
+      <button
+        onClick={() => {
+          setGameMode(GameMode[buttonType]);
+        }}
+        name="gameType"
+        value={buttonType}
+        className={`${buttonTypeColors[buttonType].outerBG} group/primaryButton flex h-[56px] w-full flex-col rounded-[15px] text-[16px] font-bold tracking-[1.25px] text-darkNavy disabled:cursor-not-allowed sm:h-[67px] sm:text-[20px]`}
+        type="button"
+      >
+        <div
+          className={`${buttonTypeColors[buttonType].innerBG} ${buttonTypeColors[buttonType].innerBGHover} flex h-[48px] w-full items-center justify-center rounded-b-[16px] rounded-t-[15px] transition-colors sm:h-[59px] sm:rounded-b-[20px]`}
+        >
+          {buttonTypeColors[buttonType].title}
+        </div>
+      </button>
+    </Link>
+  );
+};
 
 export default function Form() {
+  const { setPlayerMark, playerMark } = useContext(DataContext);
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form action={proceedToGame} className="flex w-full flex-col gap-[40px]">
+    <form className="flex w-full flex-col gap-[40px]">
       <div className="h-[205px] w-full rounded-[15px] bg-semiDarkNavyOuterShadow">
-        <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-semiDarkNavy py-[22px]">
+        <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-semiDarkNavy px-[24px] py-[22px]">
           <h1 className="text-[16px] font-bold tracking-[1px] text-silver">{title}</h1>
-          <div className="flex h-[72px] w-[412px] items-center justify-center rounded-[10px] bg-darkNavy">
-            <label className="group/xOption relative flex items-center justify-center">
+          <div className="flex h-[72px] w-full items-center justify-center rounded-[10px] bg-darkNavy">
+            <label className="group/xOption relative flex w-1/2 items-center justify-center pl-[8px]">
               <svg
                 className="pointer-events-none absolute fill-silver transition group-has-[input[type='radio']:checked]/xOption:fill-darkNavy"
                 width="32"
@@ -56,10 +68,18 @@ export default function Form() {
                   fillRule="evenodd"
                 />
               </svg>
-              <input type="radio" name="playerMark" value={PlayerMark.X} />
+              <input
+                onChange={(event) => {
+                  setPlayerMark(event.target.value as PlayerMark);
+                }}
+                checked={playerMark === PlayerMark.X}
+                type="radio"
+                name="playerMark"
+                value={PlayerMark.X}
+              />
               {''}
             </label>
-            <label className="group/oOption relative flex items-center justify-center">
+            <label className="group/oOption relative flex w-1/2 items-center justify-center pr-[8px]">
               <svg
                 className="pointer-events-none absolute fill-silver transition group-has-[input[type='radio']:checked]/oOption:fill-darkNavy"
                 width="32"
@@ -69,7 +89,15 @@ export default function Form() {
               >
                 <path d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z" />
               </svg>
-              <input defaultChecked type="radio" name="playerMark" value={PlayerMark.O} />
+              <input
+                onChange={(event) => {
+                  setPlayerMark(event.target.value as PlayerMark);
+                }}
+                checked={playerMark === PlayerMark.O}
+                type="radio"
+                name="playerMark"
+                value={PlayerMark.O}
+              />
               {''}
             </label>
           </div>

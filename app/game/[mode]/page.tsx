@@ -1,68 +1,119 @@
+'use client';
+
 import Navbar from './Navbar';
 import Main from './Main';
-import { redirect } from 'next/navigation';
-import { BlockValue, PlayerMark } from '@/app/_lib/interfaces';
-import { cookies } from 'next/headers';
-
-let A1 = BlockValue.empty;
-let A2 = BlockValue.empty;
-let A3 = BlockValue.empty;
-let B1 = BlockValue.empty;
-let B2 = BlockValue.empty;
-let B3 = BlockValue.empty;
-let C1 = BlockValue.empty;
-let C2 = BlockValue.empty;
-let C3 = BlockValue.empty;
-
-// eslint-disable-next-line @typescript-eslint/require-await
-async function handleSubmit(FormData: FormData) {
-  'use server';
-  const currentDate = new Date();
-
-  // FormData.append('A1', BlockValue.X);
-  // console.log(FormData.get('A1') as BlockValue);
-  // console.log(FormData.get('restart'));
-
-  // const restart = FormData.get('restart') === 'restart' ? true : false;
-  console.log(FormData.get('restart'));
-  if (FormData.get('restart') === 'restart') {
-    A1 = BlockValue.empty;
-    A2 = BlockValue.empty;
-    A3 = BlockValue.empty;
-    B1 = BlockValue.empty;
-    B2 = BlockValue.empty;
-    B3 = BlockValue.empty;
-    C1 = BlockValue.empty;
-    C2 = BlockValue.empty;
-    C3 = BlockValue.empty;
-    // redirect('/game/singlePlayer');
-  } else {
-    A1 = FormData.get('A1') ? (FormData.get('A1') as BlockValue) : A1;
-    A2 = FormData.get('A2') ? (FormData.get('A2') as BlockValue) : A2;
-    A3 = FormData.get('A3') ? (FormData.get('A3') as BlockValue) : A3;
-    B1 = FormData.get('B1') ? (FormData.get('B1') as BlockValue) : B1;
-    B2 = FormData.get('B2') ? (FormData.get('B2') as BlockValue) : B2;
-    B3 = FormData.get('B3') ? (FormData.get('B3') as BlockValue) : B3;
-    C1 = FormData.get('C1') ? (FormData.get('C1') as BlockValue) : C1;
-    C2 = FormData.get('C2') ? (FormData.get('C2') as BlockValue) : C2;
-    C3 = FormData.get('C3') ? (FormData.get('C3') as BlockValue) : C3;
-  }
-  // console.log(A1, A2, A3, B1, B2, B3, C1, C2, C3);
-  // return [A1, A2, A3, B1, B2, B3, C1, C2, C3];
-  //reload page
-  // window.location.reload();
-  //server side page reload
-  redirect(`/game/single-player${currentDate.getTime().toString()}`);
-}
+import Footer from './Footer';
+import { DataContext } from '@/app/_providers/DataContext';
+import { useContext, useEffect } from 'react';
+import { Blocks, GameMode, PlayerMark } from '@/app/_lib/interfaces';
+import { patterns } from '@/app/_lib/const';
+import Popup from './Popup';
 
 export default function Mode() {
-  const playerMark = cookies().get('playerMark')?.value as PlayerMark;
+  const { playerMark, blocks, setBlocks, turn, setHandleTurn, win, gameMode } = useContext(DataContext);
+  const aIMark = playerMark === PlayerMark.X ? PlayerMark.O : PlayerMark.X;
+  const emptyBlocks = Object.entries(blocks).filter(([, block]) => block === undefined);
+  const randomBlock = emptyBlocks[Math.floor(Math.random() * emptyBlocks.length)];
+
+  const findBlockOfPattern = ({ blocks, mark }: { blocks: Blocks; mark: PlayerMark }): string | undefined => {
+    for (const pattern of patterns) {
+      const [block1, block2, block3] = pattern;
+      if (
+        blocks[block1 as keyof typeof blocks] === mark &&
+        blocks[block2 as keyof typeof blocks] === mark &&
+        blocks[block3 as keyof typeof blocks] === undefined
+      ) {
+        return block3;
+      }
+      if (
+        blocks[block1 as keyof typeof blocks] === mark &&
+        blocks[block3 as keyof typeof blocks] === mark &&
+        blocks[block2 as keyof typeof blocks] === undefined
+      ) {
+        return block2;
+      }
+      if (
+        blocks[block2 as keyof typeof blocks] === mark &&
+        blocks[block3 as keyof typeof blocks] === mark &&
+        blocks[block1 as keyof typeof blocks] === undefined
+      ) {
+        return block1;
+      }
+    }
+  };
+  const findEmptyCornerBlock = ({ blocks }: { blocks: Blocks }): string | undefined => {
+    const cornerBlocks = ['A1', 'A3', 'C1', 'C3'];
+    if (blocks.A1 !== undefined) cornerBlocks.splice(cornerBlocks.indexOf('A1'), 1);
+    if (blocks.A3 !== undefined) cornerBlocks.splice(cornerBlocks.indexOf('A3'), 1);
+    if (blocks.C1 !== undefined) cornerBlocks.splice(cornerBlocks.indexOf('C1'), 1);
+    if (blocks.C3 !== undefined) cornerBlocks.splice(cornerBlocks.indexOf('C3'), 1);
+    if (cornerBlocks.length === 0) return;
+    return cornerBlocks[Math.floor(Math.random() * cornerBlocks.length)];
+  };
+  const cornerMove = findEmptyCornerBlock({ blocks });
+  const defenseMove = findBlockOfPattern({ blocks, mark: playerMark });
+  const resolveMove = findBlockOfPattern({ blocks, mark: aIMark });
+
+  useEffect(() => {
+    if (turn === playerMark || win !== undefined || gameMode === GameMode.multiPlayer) return;
+    const timer = setTimeout(() => {
+      if (emptyBlocks.length === 0) return;
+      const [blockKey] = randomBlock;
+
+      if (blocks.B2 === undefined) {
+        setBlocks((prevBlocks) => ({
+          ...prevBlocks,
+          B2: aIMark,
+        }));
+        setHandleTurn(true);
+        return;
+      } else if (resolveMove) {
+        setBlocks((prevBlocks) => ({
+          ...prevBlocks,
+          [resolveMove]: aIMark,
+        }));
+      } else if (defenseMove) {
+        setBlocks((prevBlocks) => ({
+          ...prevBlocks,
+          [defenseMove]: aIMark,
+        }));
+      } else if (cornerMove) {
+        setBlocks((prevBlocks) => ({
+          ...prevBlocks,
+          [cornerMove]: aIMark,
+        }));
+      } else
+        setBlocks((prevBlocks) => ({
+          ...prevBlocks,
+          [blockKey]: aIMark,
+        }));
+      setHandleTurn(true);
+    }, 750);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [
+    aIMark,
+    blocks.B2,
+    cornerMove,
+    defenseMove,
+    emptyBlocks.length,
+    gameMode,
+    playerMark,
+    randomBlock,
+    resolveMove,
+    setBlocks,
+    setHandleTurn,
+    turn,
+    win,
+  ]);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form action={handleSubmit} className="mx-auto flex h-fit w-full max-w-[460px] flex-col gap-[19px]">
+    <form className="mx-auto flex h-fit w-full max-w-[328px] flex-col sm:max-w-[460px] sm:gap-[19px]">
+      <Popup />
       <Navbar />
-      <Main playerMark={playerMark} A1={A1} A2={A2} A3={A3} B1={B1} B2={B2} B3={B3} C1={C1} C2={C2} C3={C3} />
+      <Main />
+      <Footer />
     </form>
   );
 }

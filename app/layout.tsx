@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
-// import DataProvider from '@/app/_providers/DataContext';
+import DataProvider from '@/app/_providers/DataContext';
 
 const outfit = Outfit({
   display: 'swap',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html className="hidden" lang="en">
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></link>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"></link>
@@ -26,10 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image" content={undefined} />
       </head>
       <body
-        className={`${outfit.variable} mx-auto flex min-h-dvh flex-col justify-center overflow-x-clip bg-[#1A2A33] font-outfit md:min-h-screen`}
+        className={`${outfit.variable} mx-auto flex min-h-dvh flex-col justify-center overflow-x-clip bg-darkNavy p-6 font-outfit sm:py-10 md:min-h-screen`}
       >
-        {/* <DataProvider>{children}</DataProvider> */}
-        {children}
+        <DataProvider>{children}</DataProvider>
       </body>
     </html>
   );
