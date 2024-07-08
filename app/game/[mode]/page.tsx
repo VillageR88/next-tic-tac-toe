@@ -121,7 +121,7 @@ export default function Mode() {
   ]);
 
   return (
-    <form className="mx-auto flex h-fit w-full max-w-[460px] flex-col gap-[19px]">
+    <form className="mx-auto flex h-fit w-full max-w-[328px] flex-col sm:max-w-[460px] sm:gap-[19px]">
       <Popup />
       <Navbar />
       <Main winBlocks={winBlocks} />

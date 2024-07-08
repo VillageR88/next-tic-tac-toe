@@ -51,10 +51,10 @@ function Block({
       aria-label={blockName}
       value={playerMark}
       type="button"
-      className={`${winBlocks?.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlueOuterShadow' : 'bg-lightYellowOuterShadow') : 'bg-semiDarkNavyOuterShadow'} group/buttonBox flex size-[140px] rounded-[15px] disabled:hover:cursor-not-allowed`}
+      className={`${winBlocks?.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlueOuterShadow' : 'bg-lightYellowOuterShadow') : 'bg-semiDarkNavyOuterShadow'} group/buttonBox flex h-[96px] w-full rounded-[15px] disabled:hover:cursor-not-allowed sm:size-[140px]`}
     >
       <div
-        className={`flex h-[132px] w-full items-center justify-center rounded-b-[17px] rounded-t-[15px] ${winBlocks?.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlue' : 'bg-lightYellow') : 'bg-semiDarkNavy'}`}
+        className={`flex h-[88px] w-full items-center justify-center rounded-b-[17px] rounded-t-[15px] sm:h-[132px] ${winBlocks?.includes(blockName) ? (win === PlayerMark.X ? 'bg-lightBlue' : 'bg-lightYellow') : 'bg-semiDarkNavy'}`}
       >
         <div className="absolute size-fit opacity-0 transition group-hover/buttonBox:opacity-100">
           <PlayerMarkIconHover />
@@ -71,10 +71,10 @@ export default function Main({ winBlocks }: { winBlocks: string[] | undefined })
   {
     const { blocks } = useContext(DataContext);
     return (
-      <main className="h-[461px] w-[460]">
-        <ul className="grid grid-cols-3 gap-[20px]">
+      <main className="mt-[64px] max-h-[460px] w-full max-w-[328px] sm:mt-0 sm:max-w-[460px]">
+        <ul className="grid w-full grid-cols-3 gap-[20px]">
           {Object.entries(blocks).map((element, i) => (
-            <li key={i}>
+            <li className="w-full" key={i}>
               <Block winBlocks={winBlocks} value={element[1] as PlayerMark} blockName={element[0] as keyof Blocks} />
             </li>
           ))}

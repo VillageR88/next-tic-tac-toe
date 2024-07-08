@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image" content={undefined} />
       </head>
       <body
-        className={`${outfit.variable} mx-auto flex min-h-dvh flex-col justify-center overflow-x-clip bg-darkNavy font-outfit md:min-h-screen`}
+        className={`${outfit.variable} mx-auto flex min-h-dvh flex-col justify-center overflow-x-clip bg-darkNavy p-6 font-outfit sm:py-10 md:min-h-screen`}
       >
         <DataProvider>{children}</DataProvider>
       </body>

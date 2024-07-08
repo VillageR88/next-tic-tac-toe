@@ -6,10 +6,14 @@ import { useContext } from 'react';
 const Box = ({ title, score, background }: { title: string; score: number; background: string }) => {
   return (
     <div
-      className={`${background} flex h-[72px] w-[140px] flex-col items-center justify-center rounded-[15px] text-darkNavy`}
+      className={`${background} flex h-[64px] w-full flex-col items-center justify-center rounded-[15px] text-darkNavy sm:h-[72px] sm:w-[140px]`}
     >
-      <span className="text-[14px] font-medium leading-tight tracking-[0.88px]">{title}</span>
-      <span className="text-[24px] font-bold leading-tight tracking-[1.5px]">{score}</span>
+      <span className="text-[12px] font-medium leading-tight tracking-[0.75px] sm:text-[14px] sm:tracking-[0.88px]">
+        {title}
+      </span>
+      <span className="text-[20px] font-bold leading-tight tracking-[1.25px] sm:text-[24px] sm:tracking-[1.5px]">
+        {score}
+      </span>
     </div>
   );
 };
@@ -32,10 +36,10 @@ export default function Footer() {
     O: { name: nameO, score: score.O, background: 'bg-lightYellow' },
   };
   return (
-    <footer className="flex w-full justify-between">
-      <ul className="flex w-full justify-between">
+    <footer className="mt-[20px] flex w-full max-w-[328px] justify-between sm:mt-0 sm:max-w-[460px]">
+      <ul className="flex w-full justify-between gap-[20px]">
         {Object.values(items).map((item, index) => (
-          <li key={index}>
+          <li className="w-full" key={index}>
             <Box title={item.name} score={item.score} background={item.background} />
           </li>
         ))}

@@ -34,11 +34,11 @@ const ButtonOption = ({ buttonType }: { buttonType: ButtonType }) => {
         }}
         name="gameType"
         value={buttonType}
-        className={`${buttonTypeColors[buttonType].outerBG} group/primaryButton flex h-[67px] w-full flex-col rounded-[15px] text-[20px] font-bold tracking-[1.25px] text-darkNavy disabled:cursor-not-allowed`}
+        className={`${buttonTypeColors[buttonType].outerBG} group/primaryButton flex h-[56px] w-full flex-col rounded-[15px] text-[16px] font-bold tracking-[1.25px] text-darkNavy disabled:cursor-not-allowed sm:h-[67px] sm:text-[20px]`}
         type="button"
       >
         <div
-          className={`${buttonTypeColors[buttonType].innerBG} ${buttonTypeColors[buttonType].innerBGHover} flex h-[59px] w-full items-center justify-center rounded-b-[20px] rounded-t-[15px] transition-colors`}
+          className={`${buttonTypeColors[buttonType].innerBG} ${buttonTypeColors[buttonType].innerBGHover} flex h-[48px] w-full items-center justify-center rounded-b-[16px] rounded-t-[15px] transition-colors sm:h-[59px] sm:rounded-b-[20px]`}
         >
           {buttonTypeColors[buttonType].title}
         </div>
@@ -52,10 +52,10 @@ export default function Form() {
   return (
     <form className="flex w-full flex-col gap-[40px]">
       <div className="h-[205px] w-full rounded-[15px] bg-semiDarkNavyOuterShadow">
-        <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-semiDarkNavy py-[22px]">
+        <div className="flex h-[197px] w-full flex-col items-center justify-between rounded-b-[20px] rounded-t-[15px] bg-semiDarkNavy px-[24px] py-[22px]">
           <h1 className="text-[16px] font-bold tracking-[1px] text-silver">{title}</h1>
-          <div className="flex h-[72px] w-[412px] items-center justify-center rounded-[10px] bg-darkNavy">
-            <label className="group/xOption relative flex items-center justify-center">
+          <div className="flex h-[72px] w-full items-center justify-center rounded-[10px] bg-darkNavy">
+            <label className="group/xOption relative flex w-1/2 items-center justify-center pl-[8px]">
               <svg
                 className="pointer-events-none absolute fill-silver transition group-has-[input[type='radio']:checked]/xOption:fill-darkNavy"
                 width="32"
@@ -79,7 +79,7 @@ export default function Form() {
               />
               {''}
             </label>
-            <label className="group/oOption relative flex items-center justify-center">
+            <label className="group/oOption relative flex w-1/2 items-center justify-center pr-[8px]">
               <svg
                 className="pointer-events-none absolute fill-silver transition group-has-[input[type='radio']:checked]/oOption:fill-darkNavy"
                 width="32"

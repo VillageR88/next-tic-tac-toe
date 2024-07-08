@@ -7,7 +7,7 @@
 }
 
 input[type='radio'] {
-  @apply h-[54px] w-[198px] appearance-none rounded-[10px] transition checked:bg-silver;
+  @apply h-[54px] w-full appearance-none rounded-[10px] transition checked:bg-silver;
 }
 
 input[type='radio']:not(:checked) {
